@@ -1,13 +1,16 @@
-from selenium.common.exceptions import NoAlertPresentException
 import math
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+import time
+
+from selenium.common.exceptions import NoAlertPresentException
 from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+
 from .locators import BasePageLocators
 
 
 class BasePage():
-    def __init__(self, browser, url, timeout=10):
+    def __init__(self, browser, url):
         self.browser = browser
         self.url = url
 
@@ -63,5 +66,10 @@ class BasePage():
         self.browser.find_element(*BasePageLocators.BASKET_BTN).click()
 
     def should_be_authorized_user(self):
-        assert self.is_element_present(*BasePageLocators.USER_ICON),\
+        assert self.is_element_present(*BasePageLocators.USER_ICON), \
             "User icon is not presented, probably unauthorised user"
+
+    @staticmethod
+    def generate_email():
+        email = str(time.time()) + "@fakemail.org"
+        return email
